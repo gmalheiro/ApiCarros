@@ -141,5 +141,38 @@ namespace CarrosAPI.Controllers
         }
 
 
+        [HttpDelete]
+        [Route("/DeletarCategoria/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CategoriaModel))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(CategoriaModel))]
+        public IActionResult DeletarCategoria(int id)
+        {
+            string? dbConnection = _configuration.GetConnectionString("DbConn");
+
+            var parametrosConsulta = new DynamicParameters();
+            parametrosConsulta.Add("@id", id);
+
+            MySqlConnection connection = new MySqlConnection(dbConnection);
+
+            string sqlCommand = " DELETE FROM Categorias WHERE CategoriaId = @id";
+
+            using (connection)
+            {
+                var categoria = connection.Query("SELECT * FROM Categorias WHERE CategoriaId = @Id", parametrosConsulta)
+                                       ?.FirstOrDefault()
+                                        ?? new CategoriaModel();
+                if (categoria is null)
+                {
+                    return NotFound("Categoria não encontrada");
+                }
+                else
+                {
+                    var excluirCategoria = connection.Execute(sqlCommand, parametrosConsulta);
+                    return Ok(categoria);
+                }
+            }
+
+        }
+
     }
 }
