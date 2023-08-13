@@ -78,6 +78,36 @@ namespace CarrosAPI.Controllers
 
         }
 
+        [HttpPost]
+        [Route("/CadastrarCategoria")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CategoriaModel))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(CategoriaModel))]
+        public IActionResult CadastrarCategoria(CategoriaModel categoria)
+        {
+            string? dbConnection = _configuration.GetConnectionString("DbConn");
+
+            using (MySqlConnection connection = new MySqlConnection(dbConnection))
+            {
+
+                string sqlCommand = "INSERT INTO Categorias (NomeCategoria) VALUES (@NomeCategoria)";
+
+                var NomeCategoria = new DynamicParameters();
+                NomeCategoria.Add("@NomeCategoria", categoria.NomeCategoria);
+                
+                var categoriaCriada = connection.Execute(sqlCommand,NomeCategoria);
+
+                if (categoria is null)
+                {
+                    return NotFound("Categoria não encontrada");
+                }
+                else
+                {
+                    return Ok(categoriaCriada);
+                }
+            }
+
+        }
+
 
     }
 }
