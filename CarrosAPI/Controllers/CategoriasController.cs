@@ -46,6 +46,38 @@ namespace CarrosAPI.Controllers
 
         }
 
+        [HttpGet]
+        [Route("/ListarCategoria/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CategoriaModel))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(CategoriaModel))]
+        public IActionResult BuscarDapperPorId(int id)
+        {
+            string? dbConnection = _configuration.GetConnectionString("DbConn");
+
+            var parametrosConsulta = new DynamicParameters();
+            parametrosConsulta.Add("@id",id);
+
+            MySqlConnection connection = new MySqlConnection(dbConnection);
+
+            string sqlCommand = "SELECT * FROM Categorias WHERE CategoriaId = @id";
+
+            using (connection)
+            {
+                var categoria= connection.Query(sqlCommand,parametrosConsulta)
+                                       ?.FirstOrDefault()
+                                        ?? new CategoriaModel();
+                if (categoria is null)
+                {
+                    return NotFound("Categoria não encontrada");
+                }
+                else
+                {
+                    return Ok(categoria);
+                }
+            }
+
+        }
+
 
     }
 }
