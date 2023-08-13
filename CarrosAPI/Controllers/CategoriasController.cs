@@ -108,6 +108,38 @@ namespace CarrosAPI.Controllers
 
         }
 
+        [HttpPut]
+        [Route("/AtualizarCategoria")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CategoriaModel))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(CategoriaModel))]
+        public IActionResult AtualizarCategoria(CategoriaModel categoria)
+        {
+            string? dbConnection = _configuration.GetConnectionString("DbConn");
+
+            using (MySqlConnection connection = new MySqlConnection(dbConnection))
+            {
+
+                string sqlCommand = "UPDATE categorias SET NomeCategoria = @NomeCategoria WHERE CategoriaId = @CategoriaId";
+
+                var CategoriaASerAtualizada = new DynamicParameters();
+                CategoriaASerAtualizada.Add("@NomeCategoria", categoria.NomeCategoria);
+                CategoriaASerAtualizada.Add("@CategoriaId",categoria.CategoriaId);
+
+
+                var rowsAffected = connection.Execute(sqlCommand, CategoriaASerAtualizada);
+
+                if ( rowsAffected != 1)
+                {
+                    return NotFound("Categoria não foi atualizada");
+                }
+                else
+                {
+                    return Ok(categoria);
+                }
+            }
+
+        }
+
 
     }
 }
