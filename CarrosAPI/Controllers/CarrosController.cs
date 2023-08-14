@@ -46,6 +46,62 @@ namespace CarrosAPI.Controllers
             } 
         }
 
+        [HttpGet]
+        [Route("/ListarCarro/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CarroModel))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(CarroModel))]
+        public IActionResult ListarCarrosEntity(int id)
+        {
+            try
+            {
+                var carro = _context.Carros.AsNoTracking().Where(carro => carro.CarroId == id); ;
+
+                if (carro is null)
+                {
+                    return NotFound("Carro não encontrado");
+                }
+                else
+                {
+                    return Ok(carro);
+                }
+
+            }
+            catch (Exception)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                                  "Ocorreu um erro ao tratar a sua solicitação");
+            }
+        }
+
+        [HttpPost]
+        [Route("/CadastrarCarro")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CarroModel))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(CarroModel))]
+        public IActionResult CadastrarCarro(Carro carro)
+        {
+            try
+            {
+                if (carro is null)
+                    return BadRequest("Carro nulo");
+                
+
+                 
+                _context?.Carros.Add(carro);
+
+                _context?.SaveChanges();
+
+                return Ok(carro);
+
+
+            }
+            catch (Exception)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                                  "Ocorreu um erro ao tratar a sua solicitação");
+            }
+        }
 
     }
 }

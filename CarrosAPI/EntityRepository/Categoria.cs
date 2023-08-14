@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using CarrosAPI.EntityRepository.Models;
+using CarrosAPI.EntityRepository;
 
 namespace CarrosAPI.EntityRepository
 {

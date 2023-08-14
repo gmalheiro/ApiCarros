@@ -12,5 +12,18 @@ namespace CarrosAPI.EntityRepository
         public int CategoriaId { get; set; }
         [JsonIgnore]
         public virtual Categoria Categoria { get; set; } = null!;
+
+        public Carro()
+        {
+                
+        }
+
+        public Carro(string modelo, string descricao, int categoriaId)
+        {
+            Modelo = modelo;
+            Descricao = descricao;
+            CategoriaId = categoriaId;
+        }
+
     }
 }
