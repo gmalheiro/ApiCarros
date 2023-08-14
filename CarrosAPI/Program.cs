@@ -1,3 +1,7 @@
+using CarrosAPI.EntityRepository;
+using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
+
 namespace CarrosAPI
 {
     public class Program
@@ -12,6 +16,18 @@ namespace CarrosAPI
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+            });
+
+            string mySqlConnection = builder.Configuration.GetConnectionString("DbConn");
+
+            builder.Services.AddDbContext<AppDbContext>(options =>
+                                                        options.UseMySql(mySqlConnection,
+                                                        ServerVersion.AutoDetect(mySqlConnection
+                                                        )));
 
             var app = builder.Build();
 
