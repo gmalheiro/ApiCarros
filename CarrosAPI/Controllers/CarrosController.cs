@@ -78,15 +78,18 @@ namespace CarrosAPI.Controllers
         [Route("/CadastrarCarro")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CarroModel))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(CarroModel))]
-        public IActionResult CadastrarCarro(Carro carro)
+        public IActionResult CadastrarCarro(CarroModel carroModel)
         {
             try
             {
-                if (carro is null)
+                if (carroModel is null)
+                {
                     return BadRequest("Carro nulo");
-                
+                }
 
-                 
+
+                Carro carro = new Carro(carroModel?.Modelo??"",carroModel?.Descricao??"",carroModel?.CategoriaId??1);
+
                 _context?.Carros.Add(carro);
 
                 _context?.SaveChanges();

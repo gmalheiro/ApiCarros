@@ -23,6 +23,22 @@ namespace CarrosAPI.EntityRepository
             Modelo = modelo;
             Descricao = descricao;
             CategoriaId = categoriaId;
+            if (CategoriaId == 1)
+            {
+                Categoria Categoria = new Categoria() { CategoriaId = 4, NomeCategoria = "Hatch" };
+            }
+            else if (CategoriaId == 2)
+            {
+                Categoria Categoria = new Categoria() { CategoriaId = 4, NomeCategoria = "Sedan" };
+            }
+            else if (CategoriaId == 3)
+            {
+                Categoria Categoria = new Categoria() { CategoriaId = 4, NomeCategoria = "SUV" };
+            }
+            else
+            {
+                Categoria Categoria = new Categoria() { CategoriaId = 4, NomeCategoria = "Esportivo" };
+            }
         }
 
     }
