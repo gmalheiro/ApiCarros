@@ -18,7 +18,7 @@
 git clone
 ```
 
-<p>2. Utilize os comandos SQL no seu banco de dados(Recomendo utilizar oMySQL)</p>
+<p>2. Utilize os comandos SQL no seu banco de dados(Recomendo utilizar o MySQL)</p>
 
 <p>3. Abra um terminal na pasta do projeto onde o arquivo .csproj está e digite:</p>
 
