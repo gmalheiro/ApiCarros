@@ -50,7 +50,7 @@ namespace CarrosAPI.Controllers
         [Route("/ListarCarro/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CarroModel))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(CarroModel))]
-        public IActionResult ListarCarrosEntity(int id)
+        public IActionResult ListarCarroPorId(int id)
         {
             try
             {
