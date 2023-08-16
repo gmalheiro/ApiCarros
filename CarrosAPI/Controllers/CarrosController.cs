@@ -110,12 +110,12 @@ namespace CarrosAPI.Controllers
         [Route("/AtualizarCarro/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CarroModel))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(CarroModel))]
-        public IActionResult AlterarCarro(int id,Carro carroModel)
+        public IActionResult AlterarCarro(int id,CarroModel carroModel)
         {
             try
             {
 
-                var carro = _context.Carros.AsNoTracking().FirstOrDefault(carro => carro.CarroId == id);
+                var carro = _context.Carros.Find(id);
 
                 if (carro is null)
                 {
@@ -123,11 +123,10 @@ namespace CarrosAPI.Controllers
                 }
                 else
                 {
-                    carro!.Modelo = carroModel.Modelo;
-                    carro.Descricao = carroModel.Descricao;
-                    carro.Categoria.CategoriaId = carroModel.CategoriaId;
-                    carro.Categoria.NomeCategoria = CarroModel.RetornaNomeCategoria(carroModel.CategoriaId);
-                    _context.SaveChanges();
+                    carro!.Modelo = carroModel?.Modelo??"";
+                    carro.Descricao = carroModel?.Descricao??"";
+                    carro.Categoria = new Categoria { CategoriaId = carroModel?.CategoriaId??1, NomeCategoria = CarroModel.RetornaNomeCategoria(carroModel?.CategoriaId??1) };
+                    _context.SaveChanges(true);
                     return Ok(carro);
                 }
 
