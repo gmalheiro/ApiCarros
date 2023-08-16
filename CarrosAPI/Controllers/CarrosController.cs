@@ -139,8 +139,8 @@ namespace CarrosAPI.Controllers
             }
         }
 
-        [HttpPut]
-        [Route("/AtualizarCarro/{id}")]
+        [HttpDelete]
+        [Route("/DeletarCarro/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CarroModel))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(CarroModel))]
         public IActionResult DeletarCarro(int id)
