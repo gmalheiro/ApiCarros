@@ -139,5 +139,36 @@ namespace CarrosAPI.Controllers
             }
         }
 
+        [HttpPut]
+        [Route("/AtualizarCarro/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CarroModel))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(CarroModel))]
+        public IActionResult DeletarCarro(int id)
+        {
+            try
+            {
+
+                var carro = _context.Carros.Find(id);
+
+                if (carro is null)
+                {
+                    return NotFound("Carro não encontrado");
+                }
+                else
+                {
+                    _context.Carros.Remove(carro);
+                    _context.SaveChanges();
+                    return Ok(carro);
+                }
+
+            }
+            catch (Exception)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                                  "Ocorreu um erro ao tratar a sua solicitação");
+            }
+        }
+
     }
 }
