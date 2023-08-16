@@ -16,5 +16,25 @@
             CategoriaId = categoriaId;
         }
 
+        public static String RetornaNomeCategoria(int categoriaId)
+        {
+            if (categoriaId == 1)
+            {
+                return "Hatch";
+            }
+            else if (categoriaId == 2)
+            {
+                return "Sedan";
+            }
+            else if (categoriaId == 3)
+            {
+                return "SUV";
+            }
+            else
+            {
+                return "Esportivo";
+            }
+        }
+
     }
 }
