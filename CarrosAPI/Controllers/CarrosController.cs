@@ -22,7 +22,7 @@ namespace CarrosAPI.Controllers
         [Route("/ListarCarros")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CarroModel))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(CarroModel))]
-        public IActionResult ListarCarrosEntity()
+        public IActionResult ListarCarros()
         {
             try
             {
