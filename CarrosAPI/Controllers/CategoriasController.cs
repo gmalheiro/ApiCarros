@@ -3,6 +3,8 @@ using Dapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MySqlConnector;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using System.Data.Common;
 
 namespace CarrosAPI.Controllers
 {
@@ -174,5 +176,34 @@ namespace CarrosAPI.Controllers
 
         }
 
+        [HttpGet]
+        [Route("/ListarCategoriaComCarros")]
+        public IActionResult ListarCategoriaComCarros()
+        {
+            try
+            {
+                string? dbConnection = _configuration.GetConnectionString("DbConn");
+
+                using (MySqlConnection connection = new MySqlConnection(dbConnection))
+                {
+                    string? SqlCommand = $@"SELECT Modelo,NomeCategoria
+                                            FROM Carros AS CR
+                                            INNER JOIN Categorias as CT
+                                            ON CR.CategoriaId = CT.CategoriaID;";
+
+                    var list = connection.Query(SqlCommand).ToList();
+                    return Ok(list);
+                }
+
+            }
+            catch (Exception)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                                 "Ocorreu um erro ao tratar a sua solicitação");
+            }
+        }
+        }
+
     }
-}
+
