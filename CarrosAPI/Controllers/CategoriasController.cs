@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using MySqlConnector;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using System.Data.Common;
+using CarrosAPI.Repository;
 
 namespace CarrosAPI.Controllers
 {
@@ -13,29 +14,23 @@ namespace CarrosAPI.Controllers
     public class CategoriasController : ControllerBase
     {
         private readonly IConfiguration? _configuration;
+        private readonly CategoriasRepository _repository;
 
-        public CategoriasController(IConfiguration configuration)
+        public CategoriasController(IConfiguration configuration, CategoriasRepository repository)
         {
                 _configuration = configuration;
+                _repository = repository;
         }
 
         [HttpGet]
         [Route("/ListarCategorias")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CategoriaModel))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(CategoriaModel))]
-        public IActionResult BuscarDapper()
+        public IActionResult ListarCategorias()
         {
-            string? dbConnection = _configuration.GetConnectionString("DbConn");
-
-            MySqlConnection connection = new MySqlConnection(dbConnection);
-
             List<CategoriaModel> list = new();
 
-            using (connection)
-            {
-                string sqlCommand = "SELECT * FROM Categorias";
-                list = connection.Query<CategoriaModel>(sqlCommand).ToList();
-            }
+            list = _repository.ListarCategorias();
 
             if (list is null)
             {
